@@ -6,21 +6,17 @@
 </head>
   <h1><center>Loterry Game</center></h1>
 <div class= "decision1">
-  <h2>Decision 1<h2>
-    <p id="optionA" onclick="optionClickA(this)">Option A: <font size="3">If die is 2, then get $2. Or if die 2-12, get $1.60</font></p>
-    <p id="optionB" onclick="optionClickB(this)">Option B:<font size="3">If die is 2, then get $3.85. Or die 2-12, get $0.10</font></p>
+  <h2 id="header">Decision 1<h2>
+    <p id="optionA" onclick="optionClickA(this)">Option A: If die is 2, then get $2. Or if die 2-12, get $1.60</p>
+    <p id="optionB" onclick="optionClickB(this)">Option B:If die is 2, then get $3.85. Or die 2-12, get $0.10</p>
     <p id="cash">Cash: 0</p>
-</div>
-<div class="decision2">
-<h2>Decision 2<h2>
-  <p id="optionA" onclick="optionClickA(this)">Option A: <font size="3">If die is 2, then get $2. Or if die 2-12, get $1.60</font></p>
-  <p id="optionB" onclick="optionClickB(this)">Option B:<font size="3">If die is 2, then get $3.85. Or die 2-12, get $0.10</font></p>
-</div>
 <div class="wrapper">
 <h3 id="result"><img id="diceOne" src="diceOne.png" height="100" width="100"></h3>
 <h3 id="result2"><img id="diceTwo"src="diceOne.png" height="100" width="100"><h3>
+</div>
 <h4 id="total"><h4>
 <button onclick="dieClick()">Press to roll Dice</button>
+<button onclick="showOthers()">Next Decision</button>
 </div>
 <body>
 <script>
@@ -60,6 +56,13 @@ function optionClickB(x){
     pressB=true;
 }
 }
+function showOthers(){
+  var header= document.getElementById("header");
+  header.innerHTML= "Decision 2";
+  optionA.innerHTML= "Option A: If die is 2, then get $2. Or if die 3-12, get $1.60";
+  optionB.innerHTML= "Option B: If die is 2, then get $3.85. Or die 3-12, get $0.10";
+}
+
 function dieClick(){
     var result= document.getElementById("diceOne")
     var result2= document.getElementById("diceTwo");
@@ -114,8 +117,8 @@ function dieClick(){
     }
     total.innerHTML= "Total: "+ totalresult;
     // cash.innerHTML= "Cash: "+cashValue;
-}
 
+}
 }
 
 </script>
