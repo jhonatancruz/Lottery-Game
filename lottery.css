@@ -1,4 +1,4 @@
-.decision1 p {
+.decisions p {
     display: inline-block;
     width: 300px;
     padding: 10px;
@@ -6,14 +6,14 @@
     margin: 0;
     line-height: 80px;
 }
-.decision2 p {
+/*.decision2 p {
     display: inline-block;
     width: 300px;
     padding: 10px;
     border: 5px solid gray;
     margin: 0;
     line-height: 80px;
-  }
+  }*/
 button{
   margin:auto;
   display:block;
@@ -26,7 +26,17 @@ h1 {
     background-color: black;
     height: 75px;
 }
-
-div {
-    background-color: lightblue;
+div{
+  text-align: center;
+  background-color: lightblue;
 }
+div .wrapper{
+  background-color: black;
+}
+/*}
+div .wrapper{
+    text-align: center;
+}
+div .action{
+    background-color: red;
+}*/
