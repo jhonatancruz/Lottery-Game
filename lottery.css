@@ -26,13 +26,22 @@ h1 {
     background-color: black;
     height: 75px;
 }
-div{
+.decisions{
   text-align: center;
-  background-color: lightblue;
+  background-color: lightgrey;
+  width: 1100px;
+  border: 25px solid green;
+  margin: 35px;
 }
-div .wrapper{
-  background-color: black;
+.wrapper{
+  text-align:center;
+  background-color: white;
 }
+.action{
+  background-color: white;
+}
+
+
 /*}
 div .wrapper{
     text-align: center;
