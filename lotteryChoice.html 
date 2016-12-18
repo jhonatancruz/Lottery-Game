@@ -20,6 +20,9 @@
 <button onclick="dieClick()">Press to roll Dice</button>
 <button onclick="showOthers()">Next Decision</button>
 </div>
+<div id="myProgress">
+  <div id="myBar"></div>
+</div>
 <body>
 <script>
 var cashValue= 0;
@@ -27,6 +30,19 @@ var option= false;
 var pressA= false;
 var pressB= false;
 
+function move() {
+    var elem = document.getElementById("myBar");
+    var width = 1;
+    var id = setInterval(frame, 10);
+    function frame() {
+        if (width >= 100) {
+            clearInterval(id);
+        } else {
+            width++;
+            elem.style.width = width + '%';
+        }
+    }
+}
 
 function randomDice1(){
   var random= (Math.floor(Math.random()*7));
