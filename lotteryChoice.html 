@@ -5,8 +5,8 @@
   <link rel= "stylesheet" href="lottery.css"/>
 </head>
 <h1><center><font color="white">Loterry Game</font></center></h1>
+<h2 id="header">Decision 1<h2>
 <div class= "decisions">
-  <h2 id="header">Decision 1<h2>
     <p id="optionA" onclick="optionClickA(this)">Option A: If die is 2, then get $2. Or if die 2-12, get $1.60</p>
     <p id="optionB" onclick="optionClickB(this)">Option B:If die is 2, then get $3.85. Or die 2-12, get $0.10</p>
     <p id="cash">Cash: 0</p>
