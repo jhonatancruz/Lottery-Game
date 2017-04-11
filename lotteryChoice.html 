@@ -5,178 +5,88 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <!-- <link rel= "stylesheet" href="lottery.css"/> -->
   <meta charset="utf-8">
+
+  <script>
+    // Choice consists of a range of values that will result in a payout
+    function Choice(rangeIn, payoutIn) {
+    	this.range = rangeIn;
+      this.payout = payoutIn;
+    }
+
+    // A Scenario consists of two choices, mostly for organization
+    function Scenario(choiceA, choiceB) {
+    	this.choiceA = choiceA;
+      this.choiceB = choiceB;
+    }
+
+    // Sim simulates a two-dice roll and returns whether or not the result is in the range of the 'choice' selected
+    function Sim(choice) {
+      var diOne = Math.floor((Math.random()*7));
+      var diTwo = Math.floor((Math.random()*7));
+      var outcome = diOne + diTwo;
+      console.log("outcome: " + outcome);
+      return choice.range.includes(outcome);
+    }
+  </script>
+
 </head>
-<nav class="navbar navbar-inverse navbar-fixed-top">
-     <div class="container">
-       <div class="navbar-header">
-         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-           <span class="sr-only">Toggle navigation</span>
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-         </button>
-         <a class="navbar-brand" href="#header">Lottery Game</a>
-       </div>
-       <div id="navbar" class="collapse navbar-collapse">
-         <!-- <ul class="nav navbar-nav">
-           <li><a href="#about">About</a></li>
-           <li><a href="#contact">Contact</a></li>
-         </ul> -->
-         <form class="navbar-form navbar-right">
-            <div class="form-group">
-            <button type="text" class="btn btn-success" id="cash">Cash: 0</button>
-          </form>
-       </div><!--/.nav-collapse -->
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container">
+           <div class="navbar-header">
+             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+             </button>
+             <a class="navbar-brand" href="#header">Lottery Game</a>
+           </div>
+           <div id="navbar" class="collapse navbar-collapse">
+             <!-- <ul class="nav navbar-nav">
+               <li><a href="#about">About</a></li>
+               <li><a href="#contact">Contact</a></li>
+             </ul> -->
+             <form class="navbar-form navbar-right">
+                <div class="form-group">
+                <button type="text" class="btn btn-success" id="cash">Cash: 0</button>
+              </form>
+           </div><!--/.nav-collapse -->
+         </div>
+       </nav>
+    <!-- <h1><center><font color="black">Loterry Game</font></center></h1> -->
+    <h2 id="header">Decision 1<h2>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+       <h3 class="panel-title">Option A:</h3>
      </div>
-   </nav>
-<!-- <h1><center><font color="black">Loterry Game</font></center></h1> -->
-<h2 id="header">Decision 1<h2>
-<div class="panel panel-primary">
-  <div class="panel-heading">
-   <h3 class="panel-title">Option A:</h3>
- </div>
 
-  <div class="panel-body" id="optionA" onclick="optionClickA(this)">
-    If die is 2, then get $2. Or if die 2-12, get $1.60
-  </div>
-</div>
-<div class="panel panel-primary">
-  <div class="panel-heading">
-   <h3 class="panel-title">Option B:</h3>
- </div>
-  <div class="panel-body" id="optionB" onclick="optionClickB(this)">
-    If die is 2, then get $3.85. Or die 2-12, get $0.10
-  </div>
-</div>
-</div>
-<div class="wrapper" display="inline-block">
-<center><h3 id="result"><img id="diceOne" src="diceOne.png" height="100" width="100"></h3>
-<h3 id="result2"><img id="diceTwo"src="diceOne.png" height="100" width="100"><h3>
-<h4 id="total"><h4></center>
-</div>
-<div class="action"><center>
-  <button type="button" class="btn btn-lg btn-success" onclick="dieClick()">Press to Roll</button>
-  <button type="button" class="btn btn-lg btn-danger" onclick="showOthers()">Next decision</button>
-</center></div>
-<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-  <span class="sr-only">40% Complete (success)</span>
-</div>
-<body>
-<script>
-var cashValue= 0;
-var option= false;
-var pressA= false;
-var pressB= false;
+      <div class="panel-body" id="optionA" onclick="optionClickA(this)">
+        If die is 2, then get $2. Or if die 2-12, get $1.60
+      </div>
+    </div>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+       <h3 class="panel-title">Option B:</h3>
+     </div>
+      <div class="panel-body" id="optionB" onclick="optionClickB(this)">
+        If die is 2, then get $3.85. Or die 2-12, get $0.10
+      </div>
+    </div>
+    </div>
+    <div class="wrapper" display="inline-block">
+    <center><h3 id="result"><img id="diceOne" src="diceOne.png" height="100" width="100"></h3>
+    <h3 id="result2"><img id="diceTwo"src="diceOne.png" height="100" width="100"><h3>
+    <h4 id="total"><h4></center>
+    </div>
+    <div class="action"><center>
+      <button type="button" class="btn btn-lg btn-success" onclick="dieClick()">Press to Roll</button>
+      <button type="button" class="btn btn-lg btn-danger" onclick="showOthers()">Next decision</button>
+    </center></div>
+    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+      <span class="sr-only">40% Complete (success)</span>
+    </div>
+  </body>
 
-function move() {
-    var elem = document.getElementById("myBar");
-    var width = 1;
-    var id = setInterval(frame, 10);
-    function frame() {
-        if (width >= 100) {
-            clearInterval(id);
-        } else {
-            width++;
-            elem.style.width = width + '%';
-        }
-    }
-}
-
-function randomDice1(){
-  var random= (Math.floor(Math.random()*7));
-  return random;
-}
-function randomDice2(){
-  var random= (Math.floor(Math.random()*7));
-  return random;
-}
-function optionClickA(x){
-  if(pressB==true){
-    alert("Option B is already pressed");
-  }else{
-    console.log(x);
-    var optionA= document.getElementById("optionA");
-    optionA.style.backgroundColor= 'yellow';
-    option=true;
-    pressA= true;
-  }
-}
-function optionClickB(x){
-  if(pressA==true){
-    alert("Option A is already pressed")
-  }else{
-    console.log(x);
-    var optionB= document.getElementById("optionB");
-    optionB.style.backgroundColor= "yellow";
-    option= true;
-    pressB=true;
-}
-}
-function showOthers(){
-  var header= document.getElementById("header");
-  header.innerHTML= "Decision 2";
-  optionA.innerHTML= "Option A: If die is 2, then get $2. Or if die 3-12, get $1.60";
-  optionB.innerHTML= "Option B: If die is 2, then get $3.85. Or die 3-12, get $0.10";
-}
-
-function dieClick(){
-    var result= document.getElementById("diceOne")
-    var result2= document.getElementById("diceTwo");
-    var total= document.getElementById("total");
-    var cash= document.getElementById("cash");
-    var dice1= randomDice1();
-    var dice2= randomDice2();
-    var totalresult= dice1+dice2;
-
-    if(option!= true){
-    alert("You must select an option.")
-
-  } else{
-      if(pressA==true && totalresult==2){
-        cashValue+=2;
-        cash.innerHTML= "Cash: "+cashValue;
-      }else if (pressA==true && totalresult>2) {
-        cashValue+=1.60;
-        cash.innerHTML= "Cash: "+cashValue;
-      }if(pressB==true && totalresult==2){
-        cashValue+=3.85;
-        cash.innerHTML= "Cash: "+cashValue;
-      }else if(pressB==true && totalresult>2){
-        cashValue+=0.10;
-        cash.innerHTML= "Cash: "+cashValue;
-    }
-    if(dice1==1){
-      result.src= "diceOne.png";
-    }else if (dice1==2) {
-      result.src= "diceTwo.png";
-    }else if (dice1==3) {
-      result.src= "diceThree.png";
-    }else if (dice1==4){
-      result.src= "diceFour.png";
-    }else if (dice1==5) {
-      result.src= "diceFive.png";
-    }else if (dice1==6){
-      result.src= "diceSix.png";
-    }
-    if(dice2==1){
-      result2.src= "diceOne.png";
-    }else if (dice2==2) {
-      result2.src= "diceTwo.png";
-    }else if (dice2==3) {
-      result2.src= "diceThree.png";
-    }else if (dice2==4){
-      result2.src= "diceFour.png";
-    }else if (dice2==5) {
-      result2.src= "diceFive.png";
-    }else if (dice2==6){
-      result2.src= "diceSix.png";
-    }
-    total.innerHTML= "Total: "+ totalresult;
-    // cash.innerHTML= "Cash: "+cashValue;
-
-}
-}
-
-</script>
-</body>
 </html>

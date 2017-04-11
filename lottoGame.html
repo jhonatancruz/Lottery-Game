@@ -1,153 +1,21 @@
 <html>
   <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>
-
-      var cashEarned = 0;
-
-      // Returns array with ints from x to n
-      function iRange(x,n) {
-        var a = [];
-        for (i=x; i<=n; i++) {
-          a.push(i);
-        }
-        return a
-      }
-
-      // Choice consists of a range of values that will result in a payout
-      function Choice(rangeIn, payoutIn) {
-      	this.range = rangeIn;
-        this.payout = payoutIn.toFixed(2);
-        this.last = this.range.length - 1;
-        this.description = this.range.length == 1 ? "If the die is " + this.range[0] + " then get $" + this.payout : "If the die is between " + this.range[0] + " and " + this.range[this.last] + " then get $" + this.payout;
-      }
-
-      function randChoice() {
-        this.range = iRange(6,10);
-        this.payout = (Math.random()*21).toFixed(2);
-        this.last = this.range.length - 1;
-        this.description = this.range.length == 1 ? "If the die is " + this.range[0] + " then get $" + this.payout : "If the die is between " + this.range[0] + " and " + this.range[this.last] + " then get $" + this.payout;
-      }
-
-      // A Scenario consists of two choices, and a chosen value set by the 'Choose' function
-      function Scenario(choiceA, choiceB) {
-      	this.choiceA = choiceA;
-        this.choiceB = choiceB;
-        this.chosen = null;
-
-        function Choose(choice) {
-          this.chosen = choice;
-        }
-      }
-
-      // Sim simulates a two-dice roll and returns whether or not the result is in the range of the 'choice' selected
-      function Sim(choice) {
-        var diOne = Math.floor(Math.random()*7);
-        var diTwo = Math.floor(Math.random()*7);
-        var outcome = diOne + diTwo;
-
-        return choice.range.includes(outcome);
-      }
-
-      // Simulates an array of choices and returns the payouts accordinglys
-      function SimAll(choices) {
-        var payouts = 0
-
-        for (i=0; i<choices.length; i++) {
-          var choice = choices.pop()
-          var pay = Sim(choice);
-          if(pay){
-            payouts += choice.payout;
-          }
-        }
-
-        return payouts;
-
-      }
-
-      // A = new Choice([2], 2)
-      // B = new Choice([...Array(5).keys()], 1.85)
-
-      // Chosen values will come from
-      var randChoices = []
-      for (r = 0; r < 10; r++) {
-        var xr = new randChoice();
-        randChoices.push(xr);
-
-      }
-
-      // This section will be replaced with code that creates scenario objects with data from database
-      // Creates sample array of scenarios
-      var Scenarios = []
-      for (m=0; m < 5; m++) {
-        var S = new Scenario(randChoices.pop(), randChoices.pop());
-        Scenarios.push(S);
-      }
-
-      function Choose(index, choice) {
-        var S = Scenarios[index];
-        if(choice === "A") {
-          S.Choose(S.choiceA);
-        } else {
-          S.Choose(S.choiceB);
-        }
-      }
-
-      // Add choices to page
-      $(document).ready(function() {
-          var pageList = "";
-          for (i = 0; i<Scenarios.length; i++) {
-            pageList += '<tr><td><button onclick="Choose('+i+',A)" type="radio" id="'+i+'-A" name="'+i+'" value="A">';
-            pageList += Scenarios[i].choiceA.description;
-            pageList += '</button></td>'
-            pageList += '<td><buttonmonclick="Choose('+i+',B)" type="radio" id="'+i+'-B" name="'+i+'" value="B">'
-            pageList += Scenarios[i].choiceB.description;
-            pageList += '</button></td></tr>'
-          }
-          $('#choice-selection').html(pageList);
-
-      });
-
-
-      $('#choices').submit(function(e) {
-
-          e.preventDefault();
-
-          var choices = [];
-          for (q = 0; q<Scenarios.length; q++) {
-            var S = Scenarios[q];
-            choices.push(S.chosen);
-          }
-
-          cashEarned += SimAll(choices);
-
-          console.log($(this).serialize()); // will be the serialized form
-          $(this).append($(this).serialize() + '<br />');
-          $('#cash-earned').html(cashEarned);
-      });
-
-      // TODOs
-      // - Get form data
-      // - Simulate selected choices
-      // - Update Cash balance
-      // - Store in database model
-
-
-    </script>
+    <script type="text/javascript" src="./game.js"></script>
   </head>
   <body>
 
     <table style="width:100%">
       <br><br>
-      <form id="choices" method="post">
-        <div id="cash-earned">
 
-        </div>
-        <br><br>
-        <div id="choice-selection">
+      <div id="cash-earned">
 
-        </div>
-        <input type="submit" value="Go!">
+      </div>
+      <br><br>
+      <div id="choice-selection">
+
+      </div>
+      <button onclick="submitForm()">submit</button>
       </form>
     </table>
 
