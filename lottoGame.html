@@ -2,6 +2,29 @@
   <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="./lotto-game.js"></script>
+    
+    <script>
+//    //start game once DOM is loaded
+//    $(document).ready(function(){
+//        //start new game
+//        var game = new Game();
+//    
+//        //get all the variables ready
+//        game.startGame();
+//        //list all the variables for debugging purposes
+//        game.listGameVariables();
+//    
+//        //Gets triggered when "inflate" button is clicked
+//        $("#inflate").click(function() {
+//            game.inflate();
+//        });
+//        //Gets triggered when "inflate" button is clicked
+//        $("#leave").click(function() {
+//            game.leaveGame();
+//        });
+//    });
+    </script>
+    
   </head>
   <body>
 
@@ -9,13 +32,14 @@
       <br><br>
 
       <div id="cash-earned">
-
+		<!-- Cash earned variable goes here -->
       </div>
       <br><br>
       <div id="choice-selection">
-
+		<!-- Options / Choices go here -->
       </div>
-      <button onclick="submitForm()">submit</button>
+      <div onclick="submitForm()" style="background: red url('../images/bg.jpg') no-repeat left top;" class="btn btn-lg btn-danger" id="">Roll</div>
+      
       </form>
     </table>
 
