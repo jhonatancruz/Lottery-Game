@@ -4,12 +4,7 @@
 // - Update Cash balance
 // - Store in database model
 
-// function Choose(choice) {
-//   this.chosen = choice;
-// }
-
 var cashEarned = 0;
-var choices = [];
 var scenarios = [];
 var randChoices = [];
 
@@ -32,8 +27,7 @@ function print(string_to_print) {
 function Choice(rangeIn, payoutIn) {
   this.range = rangeIn;
   this.payout = payoutIn.toFixed(2);
-  this.last = this.range.length - 1;
-  this.description = this.range.length == 1 ? "If the die is " + this.range[0] + " then get $" + this.payout : "If the die is between " + this.range[0] + " and " + this.range[this.last] + " then get $" + this.payout;
+  this.description = this.range.length == 1 ? "If the die is " + this.range[0] + " then get $" + this.payout : "If the die is between " + this.range[0] + " and " + this.range[this.range.length - 1] + " then get $" + this.payout;
 }
 
 function randChoice() {
@@ -47,35 +41,45 @@ function randChoice() {
 function Scenario(choiceA, choiceB) {
   this.choiceA = choiceA;
   this.choiceB = choiceB;
-  this.chosen = null;
+  this.choice = null;
 }
 
-// Generates the roll of two die
+// Returns result from rolling two 6-sided die
 function Roll() {
-  var diOne = Math.floor(Math.random()*7);
-  var diTwo = Math.floor(Math.random()*7);
-  var outcome = diOne + diTwo;
-
-  return outcome;
+  return [Math.floor(Math.random()*7), Math.floor(Math.random()*7)];
 }
 
 // Compares the result of the roll of two die to the chosen range
-function Sim(choice) {
-  var outcome = Roll();
-  return choice.range.includes(outcome);
+function Sim(choice, roll=Roll()) {
+  return choice.range.includes(roll);
 }
 
-// Simulates an array of scenarios and returns the payouts accordingly
+// Simulates an array of scenarios and returns the total payout
 function SimScenarios(scenarios) {
   var payouts = 0;
-  var i = 0;
   var roll = Roll();
-  print(roll);
+
+  // TODO Add die faces to page
+  var rollTotal = parseInt(roll[0]) + parseInt(roll[1]);
 
   for (i = 0; i < scenarios.length; i++) {
     print("\t Choice: " + scenarios[i].chosen.range + " for " +scenarios[i].chosen.payout);
-    if(scenarios[i].chosen.range.includes(roll)) {
-      payouts = scenarios.pop().chosen.payout + payouts;
+    if(scenarios[i].chosen.range.includes(rollTotal)) {
+      payouts = parseFloat(scenarios.pop().chosen.payout) + payouts;
+    }
+  }
+  return parseFloat(payouts).toFixed(2);
+}
+
+// Simulates an array of choices and returns the total payout
+function SimChoices(choices) {
+  var payouts = 0;
+  var roll = Roll();
+
+  for (i = 0; i < choices.length; i++) {
+    print("\t Choice: " + choices[i].range + " for " + choices[i].payout);
+    if(Sim(choices[i], roll)) {
+      payouts = parseFloat(choices.pop().payout) + payouts;
     }
   }
   return parseFloat(payouts).toFixed(2);
@@ -83,30 +87,68 @@ function SimScenarios(scenarios) {
 
 // Allows choice at index to be chosen
 function Choose(index, choice) {
+
   if(choice === 0) {
     scenarios[index].chosen = scenarios[index].choiceA;
+    document.getElementById(index + "-" + 0).style.background = "blue";
+    document.getElementById(index + "-" + 1).style.background = "white";
   } else {
     scenarios[index].chosen = scenarios[index].choiceB;
+    document.getElementById(index + "-" + 1).style.background = "blue";
+    document.getElementById(index + "-" + 0).style.background = "white";
   }
+
+}
+
+// Populates and returns an array of choices from scenarios
+// TODO Should alert the user if an option is not selected
+function Validate(scenarios) {
+  choices = [];
+  for(i = 0; i < scenarios.length; i++) {
+  	if(scenarios[i].chosen === null) {
+  	  alert("Null choice found...");
+  	  break;
+  	} else {
+      choices.push(scenarios[i].chosen);
+    }
+  }
+
+  return choices;
+}
+
+// Resets page colors and chosen elements given an array of scenarios
+function Reset(scenarios) {
+  print(scenarios.length);
+  for(i = 0; i < scenarios.length; i++) {
+    scenarios[i].chosen = null;
+    document.getElementById(i + "-" + 0).style.background = "white";
+    document.getElementById(i + "-" + 1).style.background = "white";
+  }
+
 }
 
 // Calculates game total and adds to running total
 function submitForm() {
-    cashEarned = SimScenarios(scenarios) + cashEarned;
+
+	// Verify all chosen options and store in choices
+	var choices = Validate(scenarios);
+
+	// Update total cash earned
+    cashEarned = parseFloat(SimChoices(choices)) + parseFloat(cashEarned);
+
+	// Set choices back to null for next game
+    Reset(scenarios);
+    choices = [];
+
     print(cashEarned);
 
     $('#cash-earned').html(cashEarned);
 }
 
-// Chosen values will come from
-for (r = 0; r < 10; r++) {
-  randChoices.push(new randChoice());
-}
-
 // This section will be replaced with code that creates scenario objects with data from database
 // Creates sample array of scenarios
 for (m = 0; m < 5; m++) {
-  scenarios.push(new Scenario(randChoices.pop(), randChoices.pop()));
+  scenarios.push(new Scenario(new Choice([2],15), new randChoice()));
 }
 
 // Add choices to page
@@ -114,12 +156,12 @@ $(document).ready(function() {
     var pageList = "";
     var i = 0;
     for (i = 0; i < scenarios.length; i++) {
-      pageList += '<tr><td><button onclick="Choose('+i+',0)" id="'+i+'-A" name="'+i+'" value="A">';
-      pageList += scenarios[i].choiceA.description;
-      pageList += '</button></td>';
-      pageList += '<td><button onclick="Choose('+i+',1)" id="'+i+'-B" name="'+i+'" value="B">';
-      pageList += scenarios[i].choiceB.description;
-      pageList += '</button></td></tr>';
+
+      // Add first choice
+      pageList += '<tr><td class="tels"><div onclick="Choose('+i+',0)" id="'+i+'-0" name="'+i+'" value="A">'+scenarios[i].choiceA.description+'</div></td>';
+
+      // Add second choice
+      pageList += '<td class="tels"><div onclick="Choose('+i+',1)" id="'+i+'-1" name="'+i+'" value="B">'+scenarios[i].choiceB.description+'</div></td></tr>';
     }
     $('#choice-selection').html(pageList);
 });
