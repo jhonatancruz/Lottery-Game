@@ -1,7 +1,5 @@
 // TODOs
 // - Get form data
-// - Simulate selected choices
-// - Update Cash balance
 // - Store in database model
 
 var cashEarned = 0;
@@ -30,6 +28,7 @@ function Choice(rangeIn, payoutIn) {
   this.description = this.range.length == 1 ? "If the die is " + this.range[0] + " then get $" + this.payout : "If the die is between " + this.range[0] + " and " + this.range[this.range.length - 1] + " then get $" + this.payout;
 }
 
+// Creates a random choice for testing purposes
 function randChoice() {
   this.range = iRange(6,10);
   this.payout = parseFloat(Math.random()*21).toFixed(2);
@@ -49,9 +48,17 @@ function Roll() {
   return [Math.floor(Math.random()*7), Math.floor(Math.random()*7)];
 }
 
+// Add results of roll to page
+function RevealDie(roll) {
+  rollString = "<td><center><h1>"+roll[0]+"</h1></center></td><td><center><h1>"+roll[1]+"</h1></center></td>";
+  rollString += "</tr>";
+  $('#dice-numbers').html(rollString);
+}
+
 // Compares the result of the roll of two die to the chosen range
 function Sim(choice, roll=Roll()) {
-  return choice.range.includes(roll);
+  var rollSum = parseInt(roll[0]) + parseInt(roll[1]);
+  return choice.range.includes(rollSum);
 }
 
 // Simulates an array of scenarios and returns the total payout
@@ -59,11 +66,12 @@ function SimScenarios(scenarios) {
   var payouts = 0;
   var roll = Roll();
 
-  // TODO Add die faces to page
+  RevealDie(roll);
+
   var rollTotal = parseInt(roll[0]) + parseInt(roll[1]);
 
   for (i = 0; i < scenarios.length; i++) {
-    print("\t Choice: " + scenarios[i].chosen.range + " for " +scenarios[i].chosen.payout);
+    print("Player chose: " + choices[i].description + " for $" + choices[i].payout);
     if(scenarios[i].chosen.range.includes(rollTotal)) {
       payouts = parseFloat(scenarios.pop().chosen.payout) + payouts;
     }
@@ -76,8 +84,10 @@ function SimChoices(choices) {
   var payouts = 0;
   var roll = Roll();
 
+  RevealDie(roll);
+
   for (i = 0; i < choices.length; i++) {
-    print("\t Choice: " + choices[i].range + " for " + choices[i].payout);
+    print("Player chose: " + choices[i].description + " for $" + choices[i].payout);
     if(Sim(choices[i], roll)) {
       payouts = parseFloat(choices.pop().payout) + payouts;
     }
@@ -90,24 +100,26 @@ function Choose(index, choice) {
 
   if(choice === 0) {
     scenarios[index].chosen = scenarios[index].choiceA;
-    document.getElementById(index + "-" + 0).style.background = "blue";
-    document.getElementById(index + "-" + 1).style.background = "white";
+    $('#'+index + "-" + 0).removeClass('btn-secondary');
+    $('#'+index + "-" + 0).addClass('btn-info');
+    $('#'+index + "-" + 1).addClass('btn-secondary');
+    $('#'+index + "-" + 1).removeClass('btn-info');
   } else {
     scenarios[index].chosen = scenarios[index].choiceB;
-    document.getElementById(index + "-" + 1).style.background = "blue";
-    document.getElementById(index + "-" + 0).style.background = "white";
+    $('#'+index + "-" + 1).removeClass('btn-secondary');
+    $('#'+index + "-" + 1).addClass('btn-info');
+    $('#'+index + "-" + 0).removeClass('btn-info');
+    $('#'+index + "-" + 0).addClass('btn-secondary');
   }
 
 }
 
 // Populates and returns an array of choices from scenarios
-// TODO Should alert the user if an option is not selected
 function Validate(scenarios) {
   choices = [];
   for(i = 0; i < scenarios.length; i++) {
   	if(scenarios[i].chosen === null) {
-  	  alert("Null choice found...");
-  	  break;
+  	  return false;
   	} else {
       choices.push(scenarios[i].chosen);
     }
@@ -121,8 +133,12 @@ function Reset(scenarios) {
   print(scenarios.length);
   for(i = 0; i < scenarios.length; i++) {
     scenarios[i].chosen = null;
-    document.getElementById(i + "-" + 0).style.background = "white";
-    document.getElementById(i + "-" + 1).style.background = "white";
+
+    $('#'+ i + "-" + 0).addClass('btn-secondary');
+    $('#'+ i + "-" + 0).removeClass('btn-info');
+
+    $('#'+ i + "-" + 1).addClass('btn-secondary');
+    $('#'+ i + "-" + 1).removeClass('btn-info');
   }
 
 }
@@ -132,17 +148,18 @@ function submitForm() {
 
 	// Verify all chosen options and store in choices
 	var choices = Validate(scenarios);
-
-	// Update total cash earned
+  if(choices) {
+    // Update total cash earned
     cashEarned = parseFloat(SimChoices(choices)) + parseFloat(cashEarned);
 
-	// Set choices back to null for next game
+  	// Set choices back to null for next game
     Reset(scenarios);
     choices = [];
 
-    print(cashEarned);
-
-    $('#cash-earned').html(cashEarned);
+    $('#cash-earned').html("<center><h2>$"+cashEarned+"</h2></center>");
+  } else {
+    alert("Please make sure one option is chosen for each choice!");
+  }
 }
 
 // This section will be replaced with code that creates scenario objects with data from database
@@ -155,13 +172,16 @@ for (m = 0; m < 5; m++) {
 $(document).ready(function() {
     var pageList = "";
     var i = 0;
+    pageList += '<table class="table">'
     for (i = 0; i < scenarios.length; i++) {
 
-      // Add first choice
-      pageList += '<tr><td class="tels"><div onclick="Choose('+i+',0)" id="'+i+'-0" name="'+i+'" value="A">'+scenarios[i].choiceA.description+'</div></td>';
+      // Add first choice -- onclick="Choose('+i+',0)"
+
+      pageList += '<div class="row"><tr><td><button id="'+i+'-0" onclick="Choose('+i+',0)" class="btn btn-block btn-lg btn-secondary">'+scenarios[i].choiceA.description+'</button></div></div>';
 
       // Add second choice
-      pageList += '<td class="tels"><div onclick="Choose('+i+',1)" id="'+i+'-1" name="'+i+'" value="B">'+scenarios[i].choiceB.description+'</div></td></tr>';
+      pageList += '<td><button id="'+i+'-1" onclick="Choose('+i+',1)" class="btn btn-block btn-lg btn-secondary">'+scenarios[i].choiceB.description+'</button></td></tr>';
     }
+    pageList += '</table>'
     $('#choice-selection').html(pageList);
 });

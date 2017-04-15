@@ -1,47 +1,59 @@
 <html>
   <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="./lotto-game.js"></script>
-    
-    <script>
-//    //start game once DOM is loaded
-//    $(document).ready(function(){
-//        //start new game
-//        var game = new Game();
-//    
-//        //get all the variables ready
-//        game.startGame();
-//        //list all the variables for debugging purposes
-//        game.listGameVariables();
-//    
-//        //Gets triggered when "inflate" button is clicked
-//        $("#inflate").click(function() {
-//            game.inflate();
-//        });
-//        //Gets triggered when "inflate" button is clicked
-//        $("#leave").click(function() {
-//            game.leaveGame();
-//        });
-//    });
-    </script>
-    
+    <script type="text/javascript" src="javascripts/lotto-game.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/flat-ui.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css">
+
   </head>
-  <body>
+  <body class="body">
+    <div class="container">
 
-    <table style="width:100%">
-      <br><br>
+      <!-- Table to display Die rolls -->
+      <table class="table">
+        <tr>
+          <td>
+            <center>
+              <h4>Dice One</h4>
+            </center>
+          </td>
+          <td>
+            <center>
+              <h4>Dice Two</h4>
+            </center>
+          </td>
+        </tr>
+        <tr id="dice-numbers">
 
-      <div id="cash-earned">
-		<!-- Cash earned variable goes here -->
-      </div>
-      <br><br>
+            <!-- Dice rolls displayed here -->
+            <td>
+              <center>
+                <h1>-</h1>
+              </center>
+            </td>
+            <td>
+              <center>
+                <h1>-</h1>
+              </center>
+            </td>
+          </tr>
+
+      </table>
+
+      <center>
+        <div id="cash-earned">
+          <h2>$0.00</h2>
+          <!-- Cash earned variable goes here -->
+        </div>
+      </center>
+
       <div id="choice-selection">
 		<!-- Options / Choices go here -->
       </div>
-      <div onclick="submitForm()" style="background: red url('../images/bg.jpg') no-repeat left top;" class="btn btn-lg btn-danger" id="">Roll</div>
-      
-      </form>
-    </table>
+      <button class="btn btn-block btn-lg btn-success" onclick="submitForm()">Roll</button>
 
+      </form>
+
+    </div>
   </body>
 </html>
