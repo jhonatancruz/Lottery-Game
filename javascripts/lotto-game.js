@@ -49,7 +49,7 @@ function Roll() {
 }
 
 // Add results of roll to page
-function RevealDie(roll) {
+function RevealDice(roll) {
   rollString = "<td><center><h1>"+roll[0]+"</h1></center></td><td><center><h1>"+roll[1]+"</h1></center></td>";
   rollString += "</tr>";
   $('#dice-numbers').html(rollString);
@@ -66,7 +66,7 @@ function SimScenarios(scenarios) {
   var payouts = 0;
   var roll = Roll();
 
-  RevealDie(roll);
+  RevealDice(roll);
 
   var rollTotal = parseInt(roll[0]) + parseInt(roll[1]);
 
@@ -84,7 +84,7 @@ function SimChoices(choices) {
   var payouts = 0;
   var roll = Roll();
 
-  RevealDie(roll);
+  RevealDice(roll);
 
   for (i = 0; i < choices.length; i++) {
     print("Player chose: " + choices[i].description + " for $" + choices[i].payout);
