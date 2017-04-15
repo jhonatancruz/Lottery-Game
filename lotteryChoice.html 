@@ -3,8 +3,8 @@
 <head>
   <title>Lottery Choice</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <!-- <link rel= "stylesheet" href="lottery.css"/> -->
   <meta charset="utf-8">
+  <script src="lottery.js"></script>
 </head>
 <nav class="navbar navbar-inverse navbar-fixed-top">
      <div class="container">
@@ -17,19 +17,14 @@
          </button>
          <a class="navbar-brand" href="#header">Lottery Game</a>
        </div>
-       <div id="navbar" class="collapse navbar-collapse">
-         <!-- <ul class="nav navbar-nav">
-           <li><a href="#about">About</a></li>
-           <li><a href="#contact">Contact</a></li>
-         </ul> -->
+      <div id="navbar" class="collapse navbar-collapse">
          <form class="navbar-form navbar-right">
             <div class="form-group">
-            <button type="text" class="btn btn-success" id="cash">Cash: 0</button>
+              <button type="text" class="btn btn-success" id="cash">Cash: 0</button>
+            </div>
           </form>
-       </div><!--/.nav-collapse -->
      </div>
    </nav>
-<!-- <h1><center><font color="black">Loterry Game</font></center></h1> -->
 <h2 id="header">Decision 1<h2>
 <div class="panel panel-primary">
   <div class="panel-heading">
