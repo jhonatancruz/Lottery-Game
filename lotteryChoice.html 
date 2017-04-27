@@ -3,8 +3,10 @@
 <head>
   <title>Lottery Choice</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <!-- <link rel= "stylesheet" href="lottery.css"/> -->
   <meta charset="utf-8">
+<<<<<<< HEAD
+
+>>>>>>> 1e5f8bd5a5754ee2d737544debb5bcc71ea3023f
 
   <script>
     // Choice consists of a range of values that will result in a payout
